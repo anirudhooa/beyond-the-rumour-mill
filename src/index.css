@@ -3,14 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --palette-bg: #06141B;
+    --palette-surface: #11212D;
+    --palette-elevated: #253745;
+    --palette-border: #4A5C6A;
+    --palette-subtext: #9BA8AB;
+    --palette-text: #CCD0CF;
+  }
+
   body {
-    background-color: #e5e5ea;
+    background-color: #06141B;
     background-image: 
-      radial-gradient(at 10% 20%, rgba(240, 240, 245, 0.9) 0px, transparent 50%),
-      radial-gradient(at 90% 10%, rgba(225, 225, 235, 0.8) 0px, transparent 50%),
-      radial-gradient(at 50% 80%, rgba(230, 230, 238, 0.9) 0px, transparent 50%);
-    color: #1c1c1e;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
+      radial-gradient(at 0% 0%, rgba(37, 55, 69, 0.45) 0px, transparent 65%),
+      radial-gradient(at 100% 100%, rgba(17, 33, 45, 0.75) 0px, transparent 65%);
+    background-attachment: fixed;
+    color: #CCD0CF;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
     letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -23,65 +32,41 @@
   dialog::backdrop {
     overflow: hidden;
     overscroll-behavior: contain;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(6, 20, 27, 0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
   }
 }
 
-/* Clay & Frosted Glass Elements from insp1.jpg and placement.jpg */
-.clay-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.03),
-    0 4px 16px rgba(0, 0, 0, 0.04);
+/* Frosted Glass Utilities for the new palette */
+.apple-glass {
+  background: rgba(17, 33, 45, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(74, 92, 106, 0.38);
 }
 
-.clay-card-dark {
-  background: #18181b;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.25);
+.apple-card {
+  background: #11212D;
+  border: 1px solid rgba(74, 92, 106, 0.38);
+}
+.apple-card:hover {
+  background: #172a39;
+  border-color: rgba(155, 168, 171, 0.45);
 }
 
-.clay-card-hover {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.clay-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.07);
-}
-
-.clay-pill-active {
-  background: #18181b;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.clay-pill-inactive {
-  background: transparent;
-  color: #71717a;
-}
-.clay-pill-inactive:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #18181b;
-}
-
-/* Custom scrollbars */
+/* Refined Palette Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(155, 168, 171, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(155, 168, 171, 0.45);
 }

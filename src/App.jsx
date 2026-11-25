@@ -77,7 +77,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f2f2f7] text-neutral-900 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#06141B] text-[#CCD0CF] font-sans selection:bg-[#253745]">
       {/* Header Bar (insp1.jpg & placement.jpg) */}
       <Header
         currentScreen={currentScreen}
@@ -148,8 +148,8 @@ export default function App() {
 
       {/* Minimalist Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#11212D] text-[#CCD0CF] px-4 py-2.5 rounded-full border border-[#4A5C6A]/50 shadow-2xl flex items-center gap-2 text-xs font-medium animate-in fade-in slide-in-from-top-2 duration-200">
+          <CheckCircle2 className="w-4 h-4 text-[#34d399] shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -162,25 +162,25 @@ export default function App() {
         onReportSuccess={handleReportSuccess}
       />
 
-      {/* Clean Light-Tone Footer */}
-      <footer className="border-t border-black/[0.06] py-10 px-4 sm:px-6 lg:px-8 text-xs text-neutral-500 bg-white/60 mt-12">
+      {/* Clean Theme Footer */}
+      <footer className="border-t border-[#4A5C6A]/30 py-10 px-4 sm:px-6 lg:px-8 text-xs text-[#9BA8AB] bg-[#06141B]/90 mt-12 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-extrabold text-neutral-900">RumourMill v2</span>
-            <span>—</span>
+            <span className="font-semibold text-[#CCD0CF]">RumourMill v2</span>
+            <span className="text-[#4A5C6A]">—</span>
             <span>Verified Campus Placement Intelligence & Preparation Hub</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-neutral-600 font-medium">
-            <a href="#drives" onClick={(e) => { e.preventDefault(); setCurrentScreen(1); }} className="hover:text-neutral-900 transition">Explore Drives</a>
-            <a href="#roadmap" onClick={(e) => { e.preventDefault(); setCurrentScreen(2); }} className="hover:text-neutral-900 transition">Foundation Roadmap</a>
-            <a href="#debriefs" onClick={(e) => { e.preventDefault(); setCurrentScreen(5); }} className="hover:text-neutral-900 transition">Senior Debriefs</a>
-            <span>•</span>
-            <span className="text-neutral-400">Privacy Policy</span>
-            <span className="text-neutral-400">Terms of Service</span>
+          <div className="flex flex-wrap items-center gap-6 text-[#9BA8AB] font-medium">
+            <a href="#drives" onClick={(e) => { e.preventDefault(); setCurrentScreen(1); }} className="hover:text-[#CCD0CF] transition">Explore Drives</a>
+            <a href="#roadmap" onClick={(e) => { e.preventDefault(); setCurrentScreen(2); }} className="hover:text-[#CCD0CF] transition">Foundation Roadmap</a>
+            <a href="#debriefs" onClick={(e) => { e.preventDefault(); setCurrentScreen(5); }} className="hover:text-[#CCD0CF] transition">Senior Debriefs</a>
+            <span className="text-[#4A5C6A]">•</span>
+            <span className="text-[#4A5C6A]">Privacy Policy</span>
+            <span className="text-[#4A5C6A]">Terms of Service</span>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto pt-6 mt-6 border-t border-black/[0.04] text-[11px] text-neutral-400 text-center md:text-left">
+        <div className="max-w-7xl mx-auto pt-6 mt-6 border-t border-[#4A5C6A]/20 text-[11px] text-[#9BA8AB]/70 text-center md:text-left">
           Copyright © 2026 RumourMill. All company interview data and senior debriefs are verified through student coordinators and campus placement circulars.
         </div>
       </footer>
