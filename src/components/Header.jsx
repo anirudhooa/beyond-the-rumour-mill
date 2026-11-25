@@ -7,7 +7,10 @@ import {
   MessageSquareQuote, 
   Plus, 
   ShieldCheck,
-  Bookmark
+  Bookmark,
+  Bell,
+  Search,
+  Sparkles
 } from 'lucide-react';
 
 export default function Header({ 
@@ -17,53 +20,80 @@ export default function Header({
 }) {
   const navItems = [
     { id: 1, label: "Explore Drives", icon: Building2 },
-    { id: 2, label: "Foundation Roadmap", icon: Map },
-    { id: 3, label: "Company Dossiers", icon: FileText },
+    { id: 2, label: "4-Week Roadmap", icon: Map },
+    { id: 3, label: "Company Dossier", icon: FileText },
     { id: 4, label: "Curated Resources", icon: BookMarked },
     { id: 5, label: "Senior Debriefs", icon: MessageSquareQuote },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-black/75 backdrop-blur-2xl border-b border-white/[0.08]">
+    <header className="border-b border-black/[0.06] bg-white/80 backdrop-blur-xl sticky top-0 z-40">
+      {/* macOS Window Titlebar with Traffic Lights (from insp1.jpg) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 md:h-16 gap-4">
-          {/* Apple Style Brand Identity */}
+        <div className="flex items-center justify-between h-9 border-b border-black/[0.04] text-[11px] text-neutral-400">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 mr-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56] inline-block border border-[#e0443e]/50" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e] inline-block border border-[#dea123]/50" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f] inline-block border border-[#1aab29]/50" />
+            </div>
+            <span className="font-semibold text-neutral-800">RumourMill Desktop</span>
+            <span className="text-neutral-300">•</span>
+            <span className="text-neutral-500">v2.0 Placement Intelligence</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Batch 2026 Verified
+            </span>
+          </div>
+        </div>
+
+        {/* Main Navigation Bar (inspired by placement.jpg) */}
+        <div className="flex items-center justify-between h-16 gap-4">
+          {/* Brand */}
           <div 
             onClick={() => setCurrentScreen(1)} 
-            className="flex items-center gap-2.5 cursor-pointer group shrink-0"
+            className="flex items-center gap-3 cursor-pointer group shrink-0"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-b from-[#2c2c2e] to-[#1c1c1e] border border-white/10 flex items-center justify-center text-white shadow-sm group-hover:border-white/20 transition">
-              <ShieldCheck className="w-4 h-4 text-[#0a84ff]" />
+            <div className="w-9 h-9 rounded-2xl bg-neutral-900 flex items-center justify-center text-white shadow-md shadow-neutral-900/10 group-hover:scale-105 transition">
+              <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold tracking-tight text-white text-sm md:text-base">
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold tracking-tight text-neutral-900 text-base">
                   RumourMill
                 </span>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#30d158]/10 text-[#30d158] border border-[#30d158]/20">
-                  Verified Intelligence
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-neutral-100 text-neutral-600 font-mono font-bold">
+                  v2
                 </span>
               </div>
+              <p className="text-[11px] text-neutral-400 hidden sm:block">
+                Campus Placement Intelligence Hub
+              </p>
             </div>
           </div>
 
-          {/* iOS / macOS Segmented Control Navigation */}
-          <nav className="hidden md:flex items-center bg-[#1c1c1e]/80 p-1 rounded-full border border-white/[0.08] shadow-inner">
+          {/* Segmented Pills (from insp1.jpg & placement.jpg) */}
+          <nav className="hidden lg:flex items-center bg-neutral-100/90 p-1 rounded-2xl border border-black/[0.04]">
             {navItems.map((item) => {
+              const Icon = item.icon;
               const isActive = currentScreen === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => setCurrentScreen(item.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 ${
                     isActive
-                      ? 'bg-[#2c2c2e] text-white shadow-sm border border-white/10'
-                      : 'text-[#86868b] hover:text-[#f5f5f7]'
+                      ? 'bg-neutral-900 text-white shadow-sm'
+                      : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-200/50'
                   }`}
                 >
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-neutral-400'}`} />
                   <span>{item.label}</span>
                   {item.id === 4 && savedResourcesCount > 0 && (
-                    <span className="w-4 h-4 rounded-full bg-[#0a84ff] text-white text-[10px] flex items-center justify-center font-bold">
+                    <span className="w-4 h-4 rounded-full bg-white text-neutral-900 text-[10px] flex items-center justify-center font-bold">
                       {savedResourcesCount}
                     </span>
                   )}
@@ -72,40 +102,45 @@ export default function Header({
             })}
           </nav>
 
-          {/* Right Action CTA */}
+          {/* Right Action Controls (from placement.jpg) */}
           <div className="flex items-center gap-2.5 shrink-0">
             {savedResourcesCount > 0 && (
               <button
                 onClick={() => setCurrentScreen(4)}
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1c1c1e] hover:bg-[#2c2c2e] text-[#f5f5f7] text-xs font-medium border border-white/[0.08] transition"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-100 hover:bg-neutral-200/70 text-neutral-700 text-xs font-medium border border-black/[0.04] transition"
               >
-                <Bookmark className="w-3.5 h-3.5 text-[#ff9f0a] fill-[#ff9f0a]" />
+                <Bookmark className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                 <span>Saved ({savedResourcesCount})</span>
               </button>
             )}
 
             <button
               onClick={() => setCurrentScreen(6)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs shadow-sm hover:opacity-95 active:scale-95 transition"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-semibold text-xs shadow-md shadow-neutral-900/10 hover:scale-[1.02] active:scale-[0.98] transition"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>Share Experience</span>
+              <span>+ Share Experience</span>
             </button>
+
+            {/* User Profile Avatar (from placement.jpg & insp1.jpg) */}
+            <div className="w-8 h-8 rounded-full bg-neutral-200 border border-neutral-300 flex items-center justify-center font-bold text-xs text-neutral-700 overflow-hidden shrink-0">
+              <span title="Placement Aspirant Profile">JD</span>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Segmented Bar */}
-        <div className="flex md:hidden items-center gap-1 overflow-x-auto py-2 border-t border-white/[0.06] scrollbar-none">
+        {/* Mobile Navigation Subnav */}
+        <div className="flex lg:hidden items-center gap-1 overflow-x-auto py-2 border-t border-black/[0.04]">
           {navItems.map((item) => {
             const isActive = currentScreen === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setCurrentScreen(item.id)}
-                className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
                   isActive
-                    ? 'bg-[#2c2c2e] text-white'
-                    : 'text-[#86868b]'
+                    ? 'bg-neutral-900 text-white shadow-sm'
+                    : 'text-neutral-500 hover:bg-neutral-100'
                 }`}
               >
                 {item.label}

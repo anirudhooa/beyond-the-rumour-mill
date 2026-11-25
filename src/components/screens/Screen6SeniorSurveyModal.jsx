@@ -7,7 +7,10 @@ import {
   ArrowLeft, 
   ShieldCheck, 
   Plus, 
-  Trash2
+  Trash2,
+  Sparkles,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 
 export default function Screen6SeniorSurveyModal({ 
@@ -17,6 +20,9 @@ export default function Screen6SeniorSurveyModal({
 }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+
+  // ITER-04: Optional study links toggle
+  const [skipLinks, setSkipLinks] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -120,7 +126,9 @@ export default function Screen6SeniorSurveyModal({
       commonTrapsToAvoid: formData.commonTrap,
       helpfulCount: 1,
       markedHelpful: false,
-      topLinksContributed: formData.links.map(l => l.title || "Curated Placement Resource")
+      topLinksContributed: skipLinks 
+        ? ["Text-Only Round Debrief (No Links Attached)"] 
+        : formData.links.filter(l => l.title.trim()).map(l => l.title)
     };
 
     onAddDebrief(newDebrief);
@@ -129,35 +137,35 @@ export default function Screen6SeniorSurveyModal({
 
   return (
     <div className="space-y-8 pb-16">
-      {/* Header */}
-      <div className="bg-[#1c1c1e] border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-4 shadow-xl">
+      {/* Header (insp1.jpg & placement.jpg) */}
+      <div className="bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0a84ff]/10 border border-[#0a84ff]/20 text-xs font-medium text-[#0a84ff]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 text-xs font-bold text-neutral-800">
             <PenTool className="w-3.5 h-3.5" />
             <span>Senior Contribution</span>
           </div>
 
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-[#141416] border border-white/[0.06] text-[#86868b]">
-            <Clock className="w-3.5 h-3.5 text-[#ff9f0a]" />
-            <span>Target: {formatTimer(remainingSeconds)}</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-neutral-900 text-white shadow-sm">
+            <Clock className="w-3.5 h-3.5 text-amber-400" />
+            <span>5-Min Target: {formatTimer(remainingSeconds)}</span>
           </div>
         </div>
 
-        <div className="max-w-3xl space-y-2">
-          <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-            Share Your Interview Experience in 5 Minutes
+        <div className="max-w-3xl space-y-1">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight">
+            Share Your Drive Experience in 5 Minutes
           </h1>
-          <p className="text-xs md:text-sm text-[#a1a1a6] leading-relaxed">
-            Engineered to respect your time. No lengthy essays required—just bullet points, questions asked, and your top 3 vetted study resources.
+          <p className="text-xs md:text-sm text-neutral-500 leading-relaxed">
+            Respecting your schedule: no essays, just bullet points, questions asked, and optional study links.
           </p>
         </div>
 
-        {/* Segmented Step Indicator */}
+        {/* Step Indicator Pills */}
         <div className="grid grid-cols-4 gap-2 pt-2">
           {[
             { step: 1, label: "Placement Info" },
             { step: 2, label: "Rounds Faced" },
-            { step: 3, label: "Top 3 Links" },
+            { step: 3, label: "Links (Optional)" },
             { step: 4, label: "Advice & Publish" }
           ].map((s) => (
             <div
@@ -165,50 +173,50 @@ export default function Screen6SeniorSurveyModal({
               onClick={() => setCurrentStep(s.step)}
               className={`p-2.5 rounded-2xl border text-center cursor-pointer transition ${
                 currentStep === s.step
-                  ? 'bg-[#2c2c2e] text-white border-white/20 shadow-sm'
+                  ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm'
                   : currentStep > s.step
-                  ? 'bg-[#141416] text-[#30d158] border-white/[0.06]'
-                  : 'bg-[#141416] text-[#636366] border-white/[0.04]'
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200 font-bold'
+                  : 'bg-neutral-50 text-neutral-400 border-neutral-100'
               }`}
             >
-              <div className="text-[10px] uppercase font-semibold">Step {s.step}</div>
-              <div className="text-xs font-medium truncate">{s.label}</div>
+              <div className="text-[10px] uppercase font-bold">Step {s.step}</div>
+              <div className="text-xs font-semibold truncate">{s.label}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Form Card */}
-      <form onSubmit={handleSubmit} className="bg-[#1c1c1e] border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
         {/* Step 1: Placement Info */}
         {currentStep === 1 && (
           <div className="space-y-4">
-            <h2 className="text-base font-semibold text-white border-b border-white/[0.06] pb-3">
+            <h2 className="text-base font-extrabold text-neutral-900 border-b border-neutral-100 pb-3">
               Step 1: Placement Details
             </h2>
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+                <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                   Your Name & Branch
                 </label>
                 <input
                   type="text"
                   value={formData.seniorName}
                   onChange={(e) => setFormData({ ...formData, seniorName: e.target.value })}
-                  className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+                <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                   Company Name
                 </label>
                 <select
                   value={formData.companyName}
                   onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                  className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                 >
                   {companies.map(c => (
                     <option key={c.id} value={c.name}>{c.name}</option>
@@ -219,40 +227,40 @@ export default function Screen6SeniorSurveyModal({
               </div>
 
               <div>
-                <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+                <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                   Role Offered
                 </label>
                 <input
                   type="text"
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                   required
                 />
               </div>
 
               <div>
-                <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+                <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                   Package Offered
                 </label>
                 <input
                   type="text"
                   value={formData.ctcOffered}
                   onChange={(e) => setFormData({ ...formData, ctcOffered: e.target.value })}
-                  className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                   required
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
-                  Drive Date Faced
+                <label className="text-xs font-bold text-neutral-700 block mb-1.5">
+                  Drive Date When You Faced Interview
                 </label>
                 <input
                   type="text"
                   value={formData.driveDateFaced}
                   onChange={(e) => setFormData({ ...formData, driveDateFaced: e.target.value })}
-                  className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                   required
                 />
               </div>
@@ -262,9 +270,9 @@ export default function Screen6SeniorSurveyModal({
               <button
                 type="button"
                 onClick={() => setCurrentStep(2)}
-                className="px-5 py-2 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs flex items-center gap-1.5 transition"
+                className="px-5 py-2.5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm"
               >
-                <span>Continue</span>
+                <span>Continue to Rounds</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -274,37 +282,37 @@ export default function Screen6SeniorSurveyModal({
         {/* Step 2: Rounds Faced */}
         {currentStep === 2 && (
           <div className="space-y-4">
-            <h2 className="text-base font-semibold text-white border-b border-white/[0.06] pb-3">
+            <h2 className="text-base font-extrabold text-neutral-900 border-b border-neutral-100 pb-3">
               Step 2: Selection Rounds & Questions
             </h2>
 
             <div>
-              <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                 Interview Sequence & Platforms
               </label>
               <textarea
                 rows={3}
                 value={formData.roundsFaced}
                 onChange={(e) => setFormData({ ...formData, roundsFaced: e.target.value })}
-                className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                 placeholder="e.g. OA on HackerRank -> Tech 1 (DSA/Trees) -> Tech 2 (System Design) -> HR"
                 required
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
-                Questions Asked
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5">
+                Actual Questions Asked
               </label>
               <div className="space-y-2 mb-3">
                 {formData.questionsAsked.map((q, idx) => (
-                  <div key={idx} className="flex items-center gap-2 bg-[#141416] p-2.5 rounded-xl border border-white/[0.04] text-xs text-[#f5f5f7]">
-                    <span className="text-[#0a84ff] font-medium">Q{idx + 1}.</span>
-                    <span className="flex-1 text-[#a1a1a6]">{q}</span>
+                  <div key={idx} className="flex items-center gap-2 bg-neutral-50 p-2.5 rounded-2xl border border-neutral-200 text-xs text-neutral-800">
+                    <span className="text-neutral-900 font-bold">Q{idx + 1}.</span>
+                    <span className="flex-1">{q}</span>
                     <button
                       type="button"
                       onClick={() => removeQuestion(idx)}
-                      className="p-1 text-[#636366] hover:text-[#ff453a]"
+                      className="p-1 text-neutral-400 hover:text-rose-600"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -318,14 +326,14 @@ export default function Screen6SeniorSurveyModal({
                   placeholder="Type another interview question asked..."
                   value={newQuestion}
                   onChange={(e) => setNewQuestion(e.target.value)}
-                  className="flex-1 bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                  className="flex-1 bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                 />
                 <button
                   type="button"
                   onClick={addQuestion}
-                  className="px-4 py-2 bg-[#2c2c2e] hover:bg-[#3a3a3c] text-white rounded-full text-xs font-medium"
+                  className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-2xl text-xs font-bold"
                 >
-                  Add
+                  Add Question
                 </button>
               </div>
             </div>
@@ -334,7 +342,7 @@ export default function Screen6SeniorSurveyModal({
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="px-4 py-2 rounded-full bg-[#2c2c2e] text-[#a1a1a6] font-medium text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-2xl bg-neutral-100 text-neutral-700 font-bold text-xs flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
@@ -343,7 +351,7 @@ export default function Screen6SeniorSurveyModal({
               <button
                 type="button"
                 onClick={() => setCurrentStep(3)}
-                className="px-5 py-2 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs flex items-center gap-1.5 transition"
+                className="px-5 py-2.5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -352,77 +360,95 @@ export default function Screen6SeniorSurveyModal({
           </div>
         )}
 
-        {/* Step 3: Top 3 Study Links */}
+        {/* Step 3: Top 3 Study Links (ITER-04: Optional Switch) */}
         {currentStep === 3 && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
               <div>
-                <h2 className="text-base font-semibold text-white">
-                  Step 3: Recommend Top Study Links (Capped at 3)
+                <h2 className="text-base font-extrabold text-neutral-900 flex items-center gap-2">
+                  <span>Step 3: Study Resources (Optional)</span>
                 </h2>
-                <p className="text-xs text-[#86868b]">
-                  Provide only the highest-yield resources to prevent student overload.
+                <p className="text-xs text-neutral-500">
+                  Recommend up to 3 links, or toggle to submit text-only tips without URLs.
                 </p>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#141416] text-[#a1a1a6] border border-white/[0.06]">
-                {formData.links.length} / 3 Links
-              </span>
-            </div>
 
-            <div className="space-y-3">
-              {formData.links.map((link, idx) => (
-                <div key={idx} className="bg-[#141416] p-4 rounded-2xl border border-white/[0.06] space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-[#0a84ff]">
-                      Resource #{idx + 1}
-                    </span>
-                    {formData.links.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeLink(idx)}
-                        className="text-xs text-[#86868b] hover:text-[#ff453a] flex items-center gap-1"
-                      >
-                        <Trash2 className="w-3 h-3" /> Remove
-                      </button>
-                    )}
-                  </div>
-
-                  <input
-                    type="text"
-                    placeholder="Resource Title (e.g. NeetCode 150 Trees)"
-                    value={link.title}
-                    onChange={(e) => handleLinkChange(idx, "title", e.target.value)}
-                    className="w-full bg-[#1c1c1e] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
-                    required
-                  />
-
-                  <input
-                    type="text"
-                    placeholder="Why this resource? (e.g. Exact pattern overlap with live coding round)"
-                    value={link.why}
-                    onChange={(e) => handleLinkChange(idx, "why", e.target.value)}
-                    className="w-full bg-[#1c1c1e] border border-white/[0.08] rounded-xl px-3 py-1.5 text-xs text-[#a1a1a6] focus:outline-none focus:border-[#0a84ff]"
-                    required
-                  />
-                </div>
-              ))}
-            </div>
-
-            {formData.links.length < 3 && (
+              {/* ITER-04: Toggle switch to skip link input */}
               <button
                 type="button"
-                onClick={addLink}
-                className="w-full py-2.5 rounded-2xl border border-dashed border-white/20 text-xs font-medium text-[#86868b] hover:text-white hover:border-white/40 flex items-center justify-center gap-2"
+                onClick={() => setSkipLinks(!skipLinks)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-2xl text-xs font-bold border transition ${
+                  skipLinks 
+                    ? 'bg-neutral-900 text-white border-neutral-900' 
+                    : 'bg-neutral-100 text-neutral-700 border-neutral-200'
+                }`}
               >
-                <Plus className="w-4 h-4" /> Add Vetted Resource #{formData.links.length + 1}
+                <span>{skipLinks ? "✓ Text-Only Mode (Links Skipped)" : "Skip Links (Text-Only)"}</span>
               </button>
+            </div>
+
+            {!skipLinks ? (
+              <div className="space-y-3">
+                {formData.links.map((link, idx) => (
+                  <div key={idx} className="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-neutral-900">
+                        Resource #{idx + 1} (Optional)
+                      </span>
+                      {formData.links.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeLink(idx)}
+                          className="text-xs text-neutral-400 hover:text-rose-600 flex items-center gap-1"
+                        >
+                          <Trash2 className="w-3 h-3" /> Remove
+                        </button>
+                      )}
+                    </div>
+
+                    <input
+                      type="text"
+                      placeholder="Resource Title (e.g. NeetCode 150 Trees)"
+                      value={link.title}
+                      onChange={(e) => handleLinkChange(idx, "title", e.target.value)}
+                      className="w-full bg-white border border-neutral-200 rounded-xl px-3 py-2 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
+                    />
+
+                    <input
+                      type="text"
+                      placeholder="Why recommended? (e.g. Exact pattern overlap with live round)"
+                      value={link.why}
+                      onChange={(e) => handleLinkChange(idx, "why", e.target.value)}
+                      className="w-full bg-white border border-neutral-200 rounded-xl px-3 py-2 text-xs text-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
+                    />
+                  </div>
+                ))}
+
+                {formData.links.length < 3 && (
+                  <button
+                    type="button"
+                    onClick={addLink}
+                    className="w-full py-2.5 rounded-2xl border border-dashed border-neutral-300 text-xs font-bold text-neutral-600 hover:text-neutral-900 hover:border-neutral-500 flex items-center justify-center gap-2"
+                  >
+                    <Plus className="w-4 h-4" /> Add Vetted Resource #{formData.links.length + 1}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-neutral-900 mx-auto" />
+                <h3 className="font-bold text-sm text-neutral-900">Text-Only Mode Active</h3>
+                <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                  Your advice and questions will be published without mandatory URLs. This lets you finish in under 3 minutes!
+                </p>
+              </div>
             )}
 
             <div className="flex justify-between pt-4">
               <button
                 type="button"
                 onClick={() => setCurrentStep(2)}
-                className="px-4 py-2 rounded-full bg-[#2c2c2e] text-[#a1a1a6] font-medium text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-2xl bg-neutral-100 text-neutral-700 font-bold text-xs flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
@@ -431,9 +457,9 @@ export default function Screen6SeniorSurveyModal({
               <button
                 type="button"
                 onClick={() => setCurrentStep(4)}
-                className="px-5 py-2 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs flex items-center gap-1.5 transition"
+                className="px-5 py-2.5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm"
               >
-                <span>Continue</span>
+                <span>Continue to Advice</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -443,40 +469,40 @@ export default function Screen6SeniorSurveyModal({
         {/* Step 4: Advice & Publish */}
         {currentStep === 4 && (
           <div className="space-y-4">
-            <h2 className="text-base font-semibold text-white border-b border-white/[0.06] pb-3">
-              Step 4: Advice & Confirmation
+            <h2 className="text-base font-extrabold text-neutral-900 border-b border-neutral-100 pb-3">
+              Step 4: Golden Advice & Final Publish
             </h2>
 
             <div>
-              <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                 Key Advice for Juniors
               </label>
               <textarea
                 rows={3}
                 value={formData.keyAdvice}
                 onChange={(e) => setFormData({ ...formData, keyAdvice: e.target.value })}
-                className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                 required
               />
             </div>
 
             <div>
-              <label className="text-xs font-medium text-[#a1a1a6] block mb-1.5">
+              <label className="text-xs font-bold text-neutral-700 block mb-1.5">
                 Common Mistake to Avoid
               </label>
               <textarea
                 rows={2}
                 value={formData.commonTrap}
                 onChange={(e) => setFormData({ ...formData, commonTrap: e.target.value })}
-                className="w-full bg-[#141416] border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-[#0a84ff]"
+                className="w-full bg-neutral-50 border border-neutral-200 rounded-2xl px-3.5 py-2.5 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10 focus:border-neutral-900"
                 required
               />
             </div>
 
-            <div className="bg-[#141416] border border-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5 text-[#30d158] shrink-0" />
-              <div className="text-xs text-[#a1a1a6]">
-                Your debrief will be published to the verified campus feed for juniors preparing for upcoming drives.
+            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-3">
+              <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0" />
+              <div className="text-xs text-emerald-800 font-medium">
+                Your debrief will be marked as a verified placement record for all juniors preparing for upcoming drives.
               </div>
             </div>
 
@@ -484,7 +510,7 @@ export default function Screen6SeniorSurveyModal({
               <button
                 type="button"
                 onClick={() => setCurrentStep(3)}
-                className="px-4 py-2 rounded-full bg-[#2c2c2e] text-[#a1a1a6] font-medium text-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-2xl bg-neutral-100 text-neutral-700 font-bold text-xs flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
@@ -492,7 +518,7 @@ export default function Screen6SeniorSurveyModal({
 
               <button
                 type="submit"
-                className="px-6 py-2 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs shadow-sm transition"
+                className="px-6 py-2.5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-extrabold text-xs shadow-md transition"
               >
                 <span>Publish Debrief</span>
               </button>

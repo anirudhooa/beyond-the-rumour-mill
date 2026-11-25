@@ -36,29 +36,29 @@ export default function Screen4VettedLinksDrawer({
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="bg-[#1c1c1e] border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-4 shadow-xl">
+      <div className="bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 space-y-4 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0a84ff]/10 border border-[#0a84ff]/20 text-xs font-medium text-[#0a84ff]">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 text-xs font-bold text-neutral-800">
             <BookMarked className="w-3.5 h-3.5" />
             <span>Curated Resources</span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#141416] border border-white/[0.06] text-[#86868b]">
-            <Lock className="w-3.5 h-3.5 text-[#ff9f0a]" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-neutral-100 text-neutral-700">
+            <Lock className="w-3.5 h-3.5 text-amber-500" />
             <span>Strict Cap: 3 Resources per Topic</span>
           </div>
         </div>
 
-        <div className="max-w-3xl space-y-2">
-          <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
+        <div className="max-w-3xl space-y-1">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight">
             Curated Study Resources — Top 3 Peer-Vetted Links
           </h1>
-          <p className="text-xs md:text-sm text-[#a1a1a6] leading-relaxed">
-            Eliminates online resource selection paralysis. While the internet offers hundreds of tutorials, placed seniors have evaluated and ranked the top 3 high-yield links per interview topic.
+          <p className="text-xs md:text-sm text-neutral-500 leading-relaxed">
+            Eliminates online resource selection paralysis. Placed seniors have evaluated and ranked the top 3 high-yield links per interview topic.
           </p>
         </div>
 
-        {/* Topic Selector Tabs */}
+        {/* Topic Selector Tabs (from insp1.jpg & placement.jpg) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
           {CURATED_TOPICS.map((topic) => {
             const isSelected = topic.topicId === currentTopic.topicId;
@@ -66,21 +66,21 @@ export default function Screen4VettedLinksDrawer({
               <button
                 key={topic.topicId}
                 onClick={() => setActiveTopicId(topic.topicId)}
-                className={`p-4 rounded-2xl border text-left transition-all duration-200 ${
+                className={`p-4 rounded-3xl border text-left transition-all duration-200 ${
                   isSelected
-                    ? 'bg-[#2c2c2e] border-white/20 text-white shadow-sm'
-                    : 'bg-[#141416] border-white/[0.06] text-[#86868b] hover:bg-[#202022] hover:text-[#f5f5f7]'
+                    ? 'bg-neutral-900 border-neutral-900 text-white shadow-md'
+                    : 'bg-white border-neutral-200 text-neutral-600 hover:border-neutral-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className={`text-[10px] font-semibold uppercase tracking-wider ${isSelected ? 'text-[#0a84ff]' : 'text-[#636366]'}`}>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-neutral-300' : 'text-neutral-400'}`}>
                     Topic Module
                   </span>
-                  <span className="text-[11px] font-mono text-[#30d158] font-medium">
+                  <span className="text-[11px] font-mono text-emerald-500 font-bold">
                     3 Links
                   </span>
                 </div>
-                <div className="text-xs md:text-sm font-medium text-white line-clamp-1">
+                <div className="text-xs md:text-sm font-bold line-clamp-1">
                   {topic.name}
                 </div>
               </button>
@@ -90,19 +90,19 @@ export default function Screen4VettedLinksDrawer({
       </div>
 
       {/* Selected Topic Details & Capped 3 Links Container */}
-      <div className="bg-[#1c1c1e] border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-6">
-        <div className="border-b border-white/[0.06] pb-4 space-y-2">
+      <div className="bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm">
+        <div className="border-b border-neutral-100 pb-4 space-y-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-xl font-semibold text-white tracking-tight">
+            <h2 className="text-xl font-extrabold text-neutral-900 tracking-tight">
               {currentTopic.name}
             </h2>
-            <span className="text-xs text-[#86868b] font-mono">
+            <span className="text-xs text-neutral-500 font-mono font-bold">
               3 Ranked Resources
             </span>
           </div>
 
-          <div className="bg-[#141416] border border-white/[0.04] rounded-2xl p-3.5 text-xs text-[#a1a1a6]">
-            <span className="font-semibold text-white block mb-0.5">
+          <div className="bg-neutral-50 border border-neutral-200 rounded-2xl p-4 text-xs text-neutral-700">
+            <span className="font-extrabold text-neutral-900 block mb-1">
               Senior Review Context:
             </span>
             {currentTopic.seniorRationale}
@@ -119,24 +119,24 @@ export default function Screen4VettedLinksDrawer({
             return (
               <div
                 key={link.id}
-                className="bg-[#141416] border border-white/[0.06] hover:border-white/15 rounded-2xl p-5 md:p-6 transition-all duration-200 space-y-4"
+                className="bg-neutral-50 border border-neutral-200 hover:border-neutral-300 rounded-3xl p-5 md:p-6 transition-all space-y-4"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#2c2c2e] border border-white/10 text-white font-semibold text-xs flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-2xl bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shrink-0">
                       #{idx + 1}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#2c2c2e] text-[#a1a1a6]">
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-neutral-700 border border-neutral-200">
                           {link.type}
                         </span>
-                        <span className="text-xs text-[#86868b] font-mono flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-[#636366]" />
+                        <span className="text-xs text-neutral-500 font-mono flex items-center gap-1 font-semibold">
+                          <Clock className="w-3.5 h-3.5 text-neutral-400" />
                           {link.timeEstimate}
                         </span>
                       </div>
-                      <h3 className="text-base font-medium text-white mt-1">
+                      <h3 className="text-base font-bold text-neutral-900 mt-1">
                         {link.title}
                       </h3>
                     </div>
@@ -146,26 +146,26 @@ export default function Screen4VettedLinksDrawer({
                   <div className="flex items-center gap-2 self-start md:self-auto">
                     <button
                       onClick={() => handleUpvote(link.id, link.upvotes)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition ${
+                      className={`px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-1.5 transition ${
                         hasVoted
-                          ? 'bg-[#0a84ff] text-white shadow-sm'
-                          : 'bg-[#1c1c1e] hover:bg-[#2c2c2e] text-[#86868b]'
+                          ? 'bg-neutral-900 text-white shadow-sm'
+                          : 'bg-white hover:bg-neutral-100 text-neutral-700 border border-neutral-200'
                       }`}
                     >
-                      <ThumbsUp className={`w-3.5 h-3.5 ${hasVoted ? 'text-white' : 'text-[#ff9f0a]'}`} />
+                      <ThumbsUp className={`w-3.5 h-3.5 ${hasVoted ? 'text-white' : 'text-amber-500'}`} />
                       <span>{currentVotes} Upvotes</span>
                     </button>
 
                     <button
                       onClick={() => onToggleSaveResource(link.id)}
-                      className={`p-2 rounded-full text-xs font-medium flex items-center gap-1.5 border transition ${
+                      className={`p-2 rounded-2xl text-xs font-bold flex items-center gap-1.5 border transition ${
                         isSaved
-                          ? 'bg-[#ff9f0a]/10 text-[#ff9f0a] border-[#ff9f0a]/20'
-                          : 'bg-[#1c1c1e] hover:bg-[#2c2c2e] text-[#86868b] border-white/[0.08]'
+                          ? 'bg-amber-50 text-amber-700 border-amber-300'
+                          : 'bg-white hover:bg-neutral-100 text-neutral-700 border-neutral-200'
                       }`}
                       title="Bookmark resource"
                     >
-                      {isSaved ? <BookmarkCheck className="w-3.5 h-3.5 text-[#ff9f0a]" /> : <Bookmark className="w-3.5 h-3.5" />}
+                      {isSaved ? <BookmarkCheck className="w-3.5 h-3.5 text-amber-600" /> : <Bookmark className="w-3.5 h-3.5" />}
                       <span>{isSaved ? "Saved" : "Save"}</span>
                     </button>
 
@@ -173,7 +173,7 @@ export default function Screen4VettedLinksDrawer({
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-3.5 py-1.5 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white text-xs font-medium flex items-center gap-1 transition"
+                      className="px-3.5 py-1.5 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold flex items-center gap-1 transition"
                     >
                       <span>Study Link</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -182,8 +182,8 @@ export default function Screen4VettedLinksDrawer({
                 </div>
 
                 {/* Senior Note */}
-                <div className="bg-[#1c1c1e] rounded-xl p-3 border border-white/[0.04] text-xs text-[#a1a1a6]">
-                  <span className="font-semibold text-white block mb-0.5">
+                <div className="bg-white rounded-2xl p-3.5 border border-neutral-200/80 text-xs text-neutral-700">
+                  <span className="font-bold text-neutral-900 block mb-0.5">
                     Senior Review & Key Takeaway:
                   </span>
                   <p className="italic">"{link.seniorNote}"</p>
@@ -194,10 +194,10 @@ export default function Screen4VettedLinksDrawer({
         </div>
 
         {/* Quality Assurance Note */}
-        <div className="bg-[#141416] border border-white/[0.04] rounded-2xl p-4 flex items-center gap-3">
-          <CheckCircle2 className="w-5 h-5 text-[#30d158] shrink-0" />
-          <div className="text-xs text-[#a1a1a6]">
-            <strong className="text-white">Strict Curation Policy:</strong> Additional links recommended by seniors will only replace an existing resource if they achieve higher verified upvotes, guaranteeing aspirants never face resource overload.
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-3">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+          <div className="text-xs text-emerald-800 font-medium">
+            <strong className="text-emerald-950 font-bold">Strict Curation Policy:</strong> Additional links recommended by seniors will only replace an existing resource if they achieve higher verified upvotes, guaranteeing aspirants never face resource overload.
           </div>
         </div>
       </div>

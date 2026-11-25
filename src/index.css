@@ -3,21 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --apple-bg: #000000;
-    --apple-card: #1c1c1e;
-    --apple-card-hover: #2c2c2e;
-    --apple-border: rgba(255, 255, 255, 0.08);
-    --apple-text: #f5f5f7;
-    --apple-subtext: #86868b;
-  }
-
   body {
-    background-color: #000000;
-    color: #f5f5f7;
-    letter-spacing: -0.011em;
+    background-color: #e5e5ea;
+    background-image: 
+      radial-gradient(at 10% 20%, rgba(240, 240, 245, 0.9) 0px, transparent 50%),
+      radial-gradient(at 90% 10%, rgba(225, 225, 235, 0.8) 0px, transparent 50%),
+      radial-gradient(at 50% 80%, rgba(230, 230, 238, 0.9) 0px, transparent 50%);
+    color: #1c1c1e;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", sans-serif;
+    letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
   }
 
   dialog:modal {
@@ -26,44 +23,65 @@
   dialog::backdrop {
     overflow: hidden;
     overscroll-behavior: contain;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 }
 
-/* Apple-style subtle glassmorphism */
-.apple-glass {
-  background: rgba(28, 28, 30, 0.75);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+/* Clay & Frosted Glass Elements from insp1.jpg and placement.jpg */
+.clay-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.clay-card-dark {
+  background: #18181b;
+  color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
-.apple-glass-card {
-  background: rgba(28, 28, 30, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+.clay-card-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clay-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.07);
 }
 
-.apple-glass-card:hover {
-  background: rgba(44, 44, 46, 0.65);
-  border-color: rgba(255, 255, 255, 0.14);
+.clay-pill-active {
+  background: #18181b;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Refined Apple Scrollbar */
+.clay-pill-inactive {
+  background: transparent;
+  color: #71717a;
+}
+.clay-pill-inactive:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #18181b;
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(0, 0, 0, 0.25);
 }

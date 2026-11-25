@@ -22,165 +22,153 @@ export default function Screen3CompanyDossier({
   onNavigateToDebriefs, 
   onOpenReportModal 
 }) {
-  const [selectedRoundType, setSelectedRoundType] = useState("All");
   const company = companies.find(c => c.id === selectedCompanyId) || companies[0];
   const isFresh = company.isFresh;
 
-  const roundTypes = ["All", "Aptitude / OA", "Technical DSA", "System Design", "HR & Culture"];
+  // ITER-03: Interactive Round-Filter Pills
+  const [selectedRoundFilter, setSelectedRoundFilter] = useState("All");
 
-  const filteredRounds = company.rounds.filter(round => {
-    if (selectedRoundType === "All") return true;
-    if (selectedRoundType === "Aptitude / OA") {
-      return round.title.toLowerCase().includes("oa") || 
-             round.title.toLowerCase().includes("assessment") || 
-             round.title.toLowerCase().includes("cognitive");
-    }
-    if (selectedRoundType === "Technical DSA") {
-      return round.title.toLowerCase().includes("technical") || 
-             round.title.toLowerCase().includes("structures") || 
-             round.title.toLowerCase().includes("coding");
-    }
-    if (selectedRoundType === "System Design") {
-      return round.title.toLowerCase().includes("design") || 
-             round.title.toLowerCase().includes("core") ||
-             round.description.toLowerCase().includes("system design");
-    }
-    if (selectedRoundType === "HR & Culture") {
-      return round.title.toLowerCase().includes("hr") || 
-             round.title.toLowerCase().includes("culture") || 
-             round.title.toLowerCase().includes("partner") ||
-             round.title.toLowerCase().includes("managerial");
-    }
+  const roundFilterCategories = [
+    { id: "All", label: "All Rounds" },
+    { id: "OA", label: "Online Assessment (OA)" },
+    { id: "Tech", label: "Technical & DSA" },
+    { id: "Design", label: "System Design & Core" },
+    { id: "HR", label: "Culture & HR" }
+  ];
+
+  const filteredRounds = company.rounds.filter(r => {
+    if (selectedRoundFilter === "All") return true;
+    if (selectedRoundFilter === "OA") return r.title.toLowerCase().includes("oa") || r.title.toLowerCase().includes("assessment");
+    if (selectedRoundFilter === "Tech") return r.title.toLowerCase().includes("technical") || r.title.toLowerCase().includes("data structures");
+    if (selectedRoundFilter === "Design") return r.title.toLowerCase().includes("system") || r.title.toLowerCase().includes("core");
+    if (selectedRoundFilter === "HR") return r.title.toLowerCase().includes("hr") || r.title.toLowerCase().includes("culture") || r.title.toLowerCase().includes("managerial");
     return true;
   });
 
   return (
     <div className="space-y-8 pb-16">
-      {/* Company Selector Switcher */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-white/[0.06] scrollbar-none">
-        <span className="text-xs text-[#86868b] font-medium shrink-0 mr-2">
+      {/* Company Selector Switcher Pills (insp1.jpg & placement.jpg) */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <span className="text-xs text-neutral-400 font-bold shrink-0 mr-1 uppercase tracking-wider">
           Company:
         </span>
         {companies.map((c) => (
           <button
             key={c.id}
-            onClick={() => {
-              onSelectCompany(c.id);
-              setSelectedRoundType("All");
-            }}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition duration-200 ${
+            onClick={() => onSelectCompany(c.id)}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-2xl text-xs font-bold whitespace-nowrap transition duration-200 ${
               c.id === company.id
-                ? 'bg-[#2c2c2e] text-white border border-white/20 shadow-sm'
-                : 'bg-[#1c1c1e] text-[#86868b] hover:text-[#f5f5f7] border border-white/[0.06]'
+                ? 'bg-neutral-900 text-white shadow-md'
+                : 'bg-white text-neutral-600 hover:text-neutral-900 border border-neutral-200'
             }`}
           >
             <span>{c.logo}</span>
             <span>{c.name}</span>
             {!c.isFresh && (
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff9f0a]" title="Archive Record" />
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500" title="Previous Batch Archive" />
             )}
           </button>
         ))}
       </div>
 
       {/* Canonical Dossier Header */}
-      <div className="bg-[#1c1c1e] border border-white/[0.08] rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden">
+      <div className="bg-white border border-neutral-200 rounded-3xl p-6 md:p-8 space-y-6 shadow-sm relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-[#2c2c2e] border border-white/10 flex items-center justify-center text-3xl shadow-inner shrink-0">
+            <div className="w-16 h-16 rounded-3xl bg-neutral-100 border border-neutral-200 flex items-center justify-center text-3xl shadow-inner shrink-0">
               {company.logo}
             </div>
 
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
+                <h1 className="text-2xl md:text-3xl font-extrabold text-neutral-900 tracking-tight">
                   {company.name}
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#141416] text-[#86868b] border border-white/[0.06]">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-neutral-100 text-neutral-700">
                   {company.category} Track
                 </span>
               </div>
-              <div className="text-sm font-medium text-[#0a84ff]">
+              <div className="text-sm font-bold text-neutral-800">
                 {company.role}
               </div>
-              <p className="text-xs text-[#a1a1a6] max-w-xl">
+              <p className="text-xs text-neutral-500 max-w-xl">
                 {company.overview}
               </p>
             </div>
           </div>
 
-          {/* Freshness Badge & Immediate Notice Action (ITER-01) */}
+          {/* ITER-01 (CP6 High Priority Fix): Relocated Flag Outdated Button Directly Beside Verified Badge */}
           <div className="flex flex-col items-start md:items-end gap-2 shrink-0">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {isFresh ? (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#30d158]/10 text-[#30d158] border border-[#30d158]/20">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Verified Current ({company.batch})</span>
                 </div>
               ) : (
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#ff9f0a]/10 text-[#ff9f0a] border border-[#ff9f0a]/20">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  <span>Previous Batch Record</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 shadow-sm">
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Previous Batch Archive</span>
                 </div>
               )}
 
-              {/* Relocated Flag Outdated Button (ITER-01: Visible above the fold) */}
+              {/* ITER-01: Moved to prominent top position beside badge */}
               <button
                 onClick={() => onOpenReportModal(company)}
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#141416] hover:bg-[#2c2c2e] text-[#86868b] hover:text-[#ff453a] border border-white/[0.08] text-xs font-medium transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-100 hover:bg-rose-50 text-neutral-700 hover:text-rose-600 border border-neutral-200 hover:border-rose-200 text-xs font-bold transition shadow-sm"
                 title="Flag outdated format or unverified rumour"
               >
-                <Flag className="w-3.5 h-3.5" />
-                <span>Flag Stale Info</span>
+                <Flag className="w-3.5 h-3.5 text-rose-500" />
+                <span>Flag Stale / Rumour</span>
               </button>
             </div>
 
-            <div className="text-[11px] text-[#86868b]">
-              Verified: <span className="text-[#f5f5f7] font-mono">{company.verifiedDate}</span>
+            <div className="text-[11px] text-neutral-500 font-medium">
+              Verified: <span className="text-neutral-800 font-mono font-bold">{company.verifiedDate}</span>
             </div>
           </div>
         </div>
 
         {/* Notice Alert if Outdated */}
         {company.rumourAlert && (
-          <div className="bg-[#ff9f0a]/10 border border-[#ff9f0a]/20 rounded-2xl p-4 text-xs text-[#ff9f0a] flex items-start gap-3">
-            <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900 flex items-start gap-3">
+            <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
             <div className="space-y-0.5">
-              <span className="font-semibold block">Verification Notice</span>
+              <span className="font-bold block">Active Campus Rumour Alert</span>
               <p>{company.rumourAlert}</p>
             </div>
           </div>
         )}
 
-        {/* Eligibility & Package Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-[#141416] p-4 rounded-2xl border border-white/[0.04]">
+        {/* Eligibility & Package Grid (placement.jpg style) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-neutral-50 p-4 rounded-2xl border border-neutral-100">
           <div>
-            <span className="text-[10px] text-[#86868b] uppercase font-medium block">Drive Date</span>
-            <span className="text-xs md:text-sm font-semibold text-[#f5f5f7] flex items-center gap-1 mt-0.5">
-              <Calendar className="w-3.5 h-3.5 text-[#0a84ff]" />
+            <span className="text-[10px] text-neutral-400 uppercase font-bold block">Drive Date</span>
+            <span className="text-xs md:text-sm font-extrabold text-neutral-900 flex items-center gap-1 mt-0.5">
+              <Calendar className="w-3.5 h-3.5 text-neutral-500" />
               {company.driveDate}
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] text-[#86868b] uppercase font-medium block">Compensation</span>
-            <span className="text-xs md:text-sm font-semibold text-white mt-0.5 block">
+            <span className="text-[10px] text-neutral-400 uppercase font-bold block">Compensation</span>
+            <span className="text-xs md:text-sm font-black text-neutral-900 mt-0.5 block">
               {company.ctc}
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] text-[#86868b] uppercase font-medium block">Cutoff Criteria</span>
-            <span className="text-xs md:text-sm font-semibold text-[#f5f5f7] mt-0.5 block">
+            <span className="text-[10px] text-neutral-400 uppercase font-bold block">Cutoff Criteria</span>
+            <span className="text-xs md:text-sm font-extrabold text-neutral-900 mt-0.5 block">
               Min {company.cgpaCutoff} CGPA
             </span>
           </div>
 
           <div>
-            <span className="text-[10px] text-[#86868b] uppercase font-medium block">Eligible Branches</span>
+            <span className="text-[10px] text-neutral-400 uppercase font-bold block">Eligible Branches</span>
             <div className="flex flex-wrap gap-1 mt-1">
               {company.eligibleBranches.map((b) => (
-                <span key={b} className="px-2 py-0.5 text-[10px] rounded-full bg-[#2c2c2e] text-[#a1a1a6] font-medium">
+                <span key={b} className="px-2 py-0.5 text-[10px] rounded-full bg-white text-neutral-700 font-bold border border-neutral-200">
                   {b}
                 </span>
               ))}
@@ -189,17 +177,17 @@ export default function Screen3CompanyDossier({
         </div>
 
         {/* Topic Weightage Visual Proportional Bars */}
-        <div className="space-y-3 pt-2">
+        <div className="space-y-3 pt-1">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#a1a1a6] flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-[#0a84ff]" />
+            <span className="text-xs font-bold uppercase tracking-wider text-neutral-700 flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-neutral-900" />
               <span>Campus Interview Topic Weightage</span>
             </span>
-            <span className="text-[11px] text-[#86868b]">100% Preparation Allocation</span>
+            <span className="text-[11px] text-neutral-500 font-mono">100% Preparation Allocation</span>
           </div>
 
           {/* Proportional Multi-Bar */}
-          <div className="w-full h-2 rounded-full bg-[#2c2c2e] flex overflow-hidden">
+          <div className="w-full h-2.5 rounded-full bg-neutral-200 flex overflow-hidden">
             {company.topicWeightage.map((tw, idx) => (
               <div
                 key={idx}
@@ -213,107 +201,107 @@ export default function Screen3CompanyDossier({
           {/* Legend */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pt-1">
             {company.topicWeightage.map((tw, idx) => (
-              <div key={idx} className="flex items-center gap-2 text-xs text-[#a1a1a6]">
+              <div key={idx} className="flex items-center gap-2 text-xs text-neutral-600">
                 <span className={`w-2 h-2 rounded-full ${tw.color}`} />
                 <span className="truncate">{tw.topic}</span>
-                <strong className="text-white ml-auto font-mono">{tw.percentage}%</strong>
+                <strong className="text-neutral-900 ml-auto font-mono">{tw.percentage}%</strong>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Verified Round Sequence with ITER-03 Round Filters */}
+      {/* Verified Round Sequence with ITER-03 Round Filter Pills */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-white tracking-tight flex items-center gap-2">
+            <h2 className="text-xl font-extrabold text-neutral-900 tracking-tight flex items-center gap-2">
               <span>Verified Round Sequence & Elimination Process</span>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#1c1c1e] text-[#86868b] border border-white/[0.06]">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-neutral-200 text-neutral-800 font-mono font-bold">
                 {filteredRounds.length} Rounds
               </span>
             </h2>
-            <p className="text-xs text-[#86868b]">
-              Filter by round type to target specific elimination barriers.
+            <p className="text-xs text-neutral-500">
+              Each round is timestamped and cross-checked with placed candidates.
             </p>
           </div>
 
           <button
             onClick={() => onOpenDrawerWithTopic("topic-dsa")}
-            className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#0a84ff] hover:bg-[#0071e3] text-white font-medium text-xs transition"
+            className="self-start sm:self-auto inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-xs shadow-sm transition"
           >
             <BookMarked className="w-3.5 h-3.5" />
             <span>Top-3 Vetted Study Links</span>
           </button>
         </div>
 
-        {/* ITER-03: Round Type Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto bg-[#161618] p-1.5 rounded-2xl border border-white/[0.06] scrollbar-none">
-          <span className="text-xs text-[#86868b] font-medium flex items-center gap-1 px-2 shrink-0">
-            <Filter className="w-3 h-3 text-[#0a84ff]" /> Round Type:
+        {/* ITER-03: Interactive Round-Filter Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 bg-white p-2 rounded-2xl border border-neutral-200">
+          <span className="text-xs text-neutral-400 font-bold px-2 flex items-center gap-1">
+            <Filter className="w-3 h-3" /> Filter:
           </span>
-          {roundTypes.map((type) => (
+          {roundFilterCategories.map((cat) => (
             <button
-              key={type}
-              onClick={() => setSelectedRoundType(type)}
-              className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition duration-200 ${
-                selectedRoundType === type
-                  ? 'bg-[#2c2c2e] text-white shadow-sm border border-white/10'
-                  : 'text-[#86868b] hover:text-[#f5f5f7]'
+              key={cat.id}
+              onClick={() => setSelectedRoundFilter(cat.id)}
+              className={`px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition ${
+                selectedRoundFilter === cat.id
+                  ? 'bg-neutral-900 text-white shadow-sm'
+                  : 'text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100'
               }`}
             >
-              {type}
+              {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Filtered Rounds List */}
+        {/* Round Cards */}
         <div className="space-y-3.5">
           {filteredRounds.map((round) => (
             <div
               key={round.roundNumber}
-              className="bg-[#1c1c1e] border border-white/[0.08] rounded-2xl p-5 md:p-6 space-y-3 hover:border-white/20 transition"
+              className="bg-white border border-neutral-200 rounded-3xl p-5 md:p-6 space-y-3 hover:border-neutral-300 hover:shadow-md transition"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-neutral-100 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full bg-[#2c2c2e] text-white font-semibold text-xs flex items-center justify-center shrink-0 border border-white/10">
+                  <div className="w-8 h-8 rounded-2xl bg-neutral-900 text-white font-bold text-xs flex items-center justify-center shrink-0">
                     {round.roundNumber}
                   </div>
                   <div>
-                    <h3 className="text-base font-medium text-white">
+                    <h3 className="text-base font-bold text-neutral-900">
                       {round.title}
                     </h3>
-                    <div className="text-xs text-[#86868b]">
-                      Platform: <strong className="text-[#f5f5f7]">{round.platform}</strong>
+                    <div className="text-xs text-neutral-500">
+                      Platform: <strong className="text-neutral-800">{round.platform}</strong>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 self-start md:self-auto">
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#141416] text-[#86868b] flex items-center gap-1 font-mono border border-white/[0.04]">
-                    <Clock className="w-3 h-3 text-[#636366]" />
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-neutral-100 text-neutral-700 flex items-center gap-1 font-mono">
+                    <Clock className="w-3 h-3 text-neutral-500" />
                     {round.duration}
                   </span>
 
-                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#ff453a]/10 text-[#ff453a] border border-[#ff453a]/20">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
                     {round.eliminationRate}
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs md:text-sm text-[#a1a1a6] leading-relaxed">
+              <p className="text-xs md:text-sm text-neutral-600 leading-relaxed font-normal">
                 {round.description}
               </p>
 
               <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
-                <span className="text-[11px] text-[#30d158] flex items-center gap-1 font-medium">
+                <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-bold">
                   <ShieldCheck className="w-3.5 h-3.5" />
                   Verified questions from recent drive
                 </span>
 
                 <button
                   onClick={() => onOpenDrawerWithTopic(round.roundNumber === 1 ? "topic-dsa" : round.roundNumber === 2 ? "topic-sysdesign" : "topic-os-dbms")}
-                  className="inline-flex items-center gap-1 text-xs text-[#0a84ff] font-medium hover:underline transition"
+                  className="inline-flex items-center gap-1 text-xs text-neutral-900 font-extrabold hover:underline transition"
                 >
                   <span>Recommended Study Links for Round {round.roundNumber}</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -321,30 +309,24 @@ export default function Screen3CompanyDossier({
               </div>
             </div>
           ))}
-
-          {filteredRounds.length === 0 && (
-            <div className="bg-[#1c1c1e] p-8 rounded-2xl text-center text-[#86868b] text-xs">
-              No rounds match the selected filter. Switch back to "All" to view the full round sequence.
-            </div>
-          )}
         </div>
       </div>
 
       {/* Jump to Experienced Thoughts Feed */}
-      <div className="bg-[#1c1c1e] border border-white/[0.08] rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-neutral-900 text-white rounded-3xl p-6 md:p-7 flex flex-col md:flex-row items-center justify-between gap-4 shadow-md">
         <div className="space-y-1 text-center md:text-left">
-          <div className="text-base font-medium text-white flex items-center justify-center md:justify-start gap-2">
-            <MessageSquareQuote className="w-5 h-5 text-[#ff9f0a]" />
+          <div className="text-base font-bold text-white flex items-center justify-center md:justify-start gap-2">
+            <MessageSquareQuote className="w-5 h-5 text-amber-400" />
             <span>Looking for unfiltered senior interview advice?</span>
           </div>
-          <div className="text-xs text-[#86868b]">
+          <div className="text-xs text-neutral-400">
             Read structured debriefs submitted by placed seniors for {company.name}.
           </div>
         </div>
 
         <button
           onClick={onNavigateToDebriefs}
-          className="px-4 py-2 rounded-full bg-[#2c2c2e] hover:bg-[#3a3a3c] text-white font-medium text-xs border border-white/10 transition"
+          className="px-5 py-2.5 rounded-2xl bg-white hover:bg-neutral-100 text-neutral-900 font-extrabold text-xs transition shadow-sm"
         >
           View Senior Debriefs ({company.seniorDebriefCount})
         </button>

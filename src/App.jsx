@@ -33,7 +33,7 @@ export default function App() {
     setSavedResources(prev => {
       const exists = prev.includes(id);
       if (exists) {
-        showToast("Removed from saved list");
+        showToast("Removed from saved preparation list");
         return prev.filter(item => item !== id);
       } else {
         showToast("Added to your preparation list");
@@ -77,8 +77,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#000000] text-[#f5f5f7]">
-      {/* Apple-style Navigation Bar */}
+    <div className="min-h-screen flex flex-col bg-[#f2f2f7] text-neutral-900 font-sans">
+      {/* Header Bar (insp1.jpg & placement.jpg) */}
       <Header
         currentScreen={currentScreen}
         setCurrentScreen={setCurrentScreen}
@@ -86,7 +86,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         {currentScreen === 1 && (
           <Screen1Home
             companies={companies}
@@ -146,10 +146,10 @@ export default function App() {
         )}
       </main>
 
-      {/* Apple iOS Style Toast Notification */}
+      {/* Minimalist Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-[#1c1c1e]/90 backdrop-blur-2xl text-white px-4 py-2 rounded-full border border-white/10 shadow-2xl flex items-center gap-2 text-xs font-medium animate-in fade-in slide-in-from-top-2 duration-200">
-          <CheckCircle2 className="w-4 h-4 text-[#30d158] shrink-0" />
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-4 py-2.5 rounded-2xl shadow-xl flex items-center gap-2 text-xs font-semibold animate-in fade-in slide-in-from-top-2 duration-200">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -162,25 +162,25 @@ export default function App() {
         onReportSuccess={handleReportSuccess}
       />
 
-      {/* Minimalist Apple Style Footer */}
-      <footer className="border-t border-white/[0.06] py-12 px-4 sm:px-6 lg:px-8 text-xs text-[#86868b] bg-black">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      {/* Clean Light-Tone Footer */}
+      <footer className="border-t border-black/[0.06] py-10 px-4 sm:px-6 lg:px-8 text-xs text-neutral-500 bg-white/60 mt-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-white">RumourMill</span>
+            <span className="font-extrabold text-neutral-900">RumourMill v2</span>
             <span>—</span>
             <span>Verified Campus Placement Intelligence & Preparation Hub</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-[#86868b]">
-            <a href="#drives" onClick={(e) => { e.preventDefault(); setCurrentScreen(1); }} className="hover:text-white transition">Explore Drives</a>
-            <a href="#roadmap" onClick={(e) => { e.preventDefault(); setCurrentScreen(2); }} className="hover:text-white transition">Foundation Roadmap</a>
-            <a href="#debriefs" onClick={(e) => { e.preventDefault(); setCurrentScreen(5); }} className="hover:text-white transition">Senior Debriefs</a>
+          <div className="flex flex-wrap items-center gap-6 text-neutral-600 font-medium">
+            <a href="#drives" onClick={(e) => { e.preventDefault(); setCurrentScreen(1); }} className="hover:text-neutral-900 transition">Explore Drives</a>
+            <a href="#roadmap" onClick={(e) => { e.preventDefault(); setCurrentScreen(2); }} className="hover:text-neutral-900 transition">Foundation Roadmap</a>
+            <a href="#debriefs" onClick={(e) => { e.preventDefault(); setCurrentScreen(5); }} className="hover:text-neutral-900 transition">Senior Debriefs</a>
             <span>•</span>
-            <span className="text-[#636366]">Privacy Policy</span>
-            <span className="text-[#636366]">Terms of Service</span>
+            <span className="text-neutral-400">Privacy Policy</span>
+            <span className="text-neutral-400">Terms of Service</span>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto pt-6 mt-6 border-t border-white/[0.04] text-[11px] text-[#636366] text-center md:text-left">
+        <div className="max-w-7xl mx-auto pt-6 mt-6 border-t border-black/[0.04] text-[11px] text-neutral-400 text-center md:text-left">
           Copyright © 2026 RumourMill. All company interview data and senior debriefs are verified through student coordinators and campus placement circulars.
         </div>
       </footer>
